@@ -7,7 +7,8 @@
     "start": "tsx index.js",
     "dev": "tsx watch index.js",
     "seed": "tsx prisma/seed.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node --import tsx --test test/*.test.js",
+    "test:unit": "node --test test/history-unit.test.js"
   },
   "keywords": [],
   "author": "",

@@ -26,7 +26,10 @@ Audit starts after this release is deployed; it does not reconstruct past action
 ## Tests
 
 ```sh
-node --import tsx --test test/history.test.js test/audit.test.js
+npm run build  # Generate Prisma Client on a fresh checkout.
+npm test
+# Only the 14 isolated unit tests (no HTTP server or database):
+npm run test:unit
 ```
 
 Tests use mocked persistence and a localhost HTTP server. They do not write business data or audit rows to a real database.
