@@ -42,6 +42,8 @@ export const bodies = {
 
 // คำอธิบายสั้นๆ ต่อ endpoint (โชว์เป็นหัวข้อใน Swagger)
 export const summaries = {
+  "get /api/stock-movements": "ประวัติสต็อก (ADMIN, PURCHASING, ACCOUNTING)",
+  "get /api/audit-logs": "ประวัติการใช้งาน (ADMIN)",
   "post /api/auth/register": "สมัครผู้ใช้ใหม่ (ระบบ hash รหัสผ่านให้)",
   "post /api/auth/login": "เข้าสู่ระบบ คืน token เอาไปกดปุ่ม Authorize",
   "get /api/auth/me": "ข้อมูลผู้ใช้ที่ล็อกอินอยู่",
@@ -71,4 +73,22 @@ export const summaries = {
   "delete /api/products/{id}": "ปิดการใช้งาน (soft delete)",
   "delete /api/accounts/{id}": "ปิดการใช้งาน (soft delete)",
   "delete /api/users/{id}": "ปิดการใช้งาน (soft delete)",
+};
+
+// Query controls for the read-only history endpoints in Swagger.
+const historyCommon = [
+  { in: "query", name: "page", schema: { type: "integer", minimum: 1, maximum: 10000, default: 1 } },
+  { in: "query", name: "limit", schema: { type: "integer", minimum: 1, maximum: 100, default: 50 } },
+  { in: "query", name: "search", schema: { type: "string", maxLength: 100 } },
+];
+export const queryParameters = {
+  "get /api/stock-movements": [...historyCommon,
+    { in: "query", name: "product_id", schema: { type: "integer", minimum: 1 } },
+    { in: "query", name: "ref_type", schema: { type: "string", maxLength: 30 } },
+  ],
+  "get /api/audit-logs": [...historyCommon,
+    { in: "query", name: "user_id", schema: { type: "integer", minimum: 1 } },
+    { in: "query", name: "entity", schema: { type: "string", maxLength: 50 } },
+    { in: "query", name: "action", schema: { type: "string", maxLength: 20 } },
+  ],
 };

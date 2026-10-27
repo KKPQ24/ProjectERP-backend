@@ -19,7 +19,11 @@ import { salesOrderRouter } from "./salesOrder.route.js";
 import { invoiceRouter } from "./invoice.route.js";
 import { receiptRouter } from "./receipt.route.js";
 
+import { stockMovementRouter, auditLogRouter } from "./history.route.js";
+
 export const router = Router();
+router.use("/stock-movements", requireRole("PURCHASING", "ACCOUNTING"), stockMovementRouter);
+router.use("/audit-logs", requireRole("ADMIN"), auditLogRouter);
 
 
 router.use("/units", unitRouter);

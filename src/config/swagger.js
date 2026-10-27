@@ -1,4 +1,4 @@
-import { bodies, summaries } from "./apiDocs.js";
+import { bodies, summaries, queryParameters } from "./apiDocs.js";
 import { authRouter } from "../routes/auth.route.js";
 import { unitRouter } from "../routes/unit.route.js";
 import { customerRouter } from "../routes/customer.route.js";
@@ -19,10 +19,14 @@ import { salesOrderRouter } from "../routes/salesOrder.route.js";
 import { invoiceRouter } from "../routes/invoice.route.js";
 import { receiptRouter } from "../routes/receipt.route.js";
 
+import { stockMovementRouter, auditLogRouter } from "../routes/history.route.js";
+
 // resource ที่จะแสดงในหน้า Swagger: "prefix" -> router
 // เพิ่ม resource ใหม่ ก็เพิ่ม 1 บรรทัดที่นี่
 const resources = {
   auth: authRouter,
+  "stock-movements": stockMovementRouter,
+  "audit-logs": auditLogRouter,
   units: unitRouter,
   customers: customerRouter,
   suppliers: supplierRouter,
@@ -81,6 +85,8 @@ export function buildSwaggerSpec() {
         if (idParams.length > 0) {
           operation.parameters = idParams;
         }
+
+        if (queryParameters[key]) operation.parameters = [...(operation.parameters ?? []), ...queryParameters[key]];
 
         // ใส่ตัวอย่าง body เฉพาะ endpoint ที่ต้องส่ง body (จาก apiDocs)
         // endpoint แบบ /post /approve /cancel ไม่มีตัวอย่าง = ไม่ต้องส่ง body
